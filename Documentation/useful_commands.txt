@@ -1,0 +1,11 @@
+
+//Pushing changes to the remote repository
+git push  https://github.com/sumsahu/ProjectEsw.git feature-socket
+
+//Commiting changes
+git commit
+
+//Add new file to the current branch
+git add path/to/file
+
+
