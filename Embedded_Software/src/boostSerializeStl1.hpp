@@ -13,6 +13,7 @@ class Emp
 		long empId;
 		string name;
 		string Address;
+		string company;
 		friend class boost::serialization::access;
 		template <typename Archive>
 		void serialize(Archive & ar,const unsigned int version)
@@ -20,20 +21,23 @@ class Emp
 			ar & empId;
 			ar & name;
 			ar & Address;
+			ar & company;
 		}
 	public:
 		Emp(){}
-		Emp(long e,string n,string add)
+		Emp(long e,string n,string add,string comp)
 		{
 			this->empId = e;
 			this->name = n;
 			this->Address = add;
+			this->company = comp;
 		}
 		void display()
 		{
 			cout<<"Emp Id "<<this->empId<<endl;;
 			cout<<"Name "<<this->name<<endl;
 			cout<<"Address "<<this->Address<<endl;
+			cout<<"company "<<this->company<<endl;
 		}
 };
 

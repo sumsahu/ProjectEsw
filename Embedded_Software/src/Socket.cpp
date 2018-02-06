@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
 {
 	const char PORT_NUM[]="50000";
 	const int BACKLOG=50;
-	const int BUF_SIZE=100;
+	const int BUF_SIZE=500;
 	int sockFd;
 	struct addrinfo hints;
 	struct addrinfo *result,*rp;
@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
 			cout<<"Error:Failed to create the socket. Continue with the other addresses in the list."<<endl;
 			continue;
 		}
-		if(bind(sockFd,rp->ai_addr,rp->ai_addrlen) == 0)
+		if((bind(sockFd,rp->ai_addr,rp->ai_addrlen)) == 0)
 			break;
 		close(sockFd);
 	}
@@ -68,27 +68,23 @@ int main(int argc, char* argv[])
 			cout<<"Failed to accept the incoming connection"<<endl;
 			continue;
 		}
-		char buf[BUF_SIZE];
+		Manager m2;
+		int size = sizeof(m2);
+		cout<<"Size of object "<<size<<endl;
+		//char buf[BUF_SIZE];
+		char buf[size*3];
 	    std::stringstream ss;
     	//const std::string tmp = ss.str();
     	//const char* cstr = tmp.c_str();
     	//strcpy(buf,cstr);
 
 		ssize_t numRead;
-		/*if((numRead = read(clientFd,buf,BUF_SIZE)) > 0)
-		{
-			if(write(STDOUT_FILENO,buf,numRead) != numRead)
-				cout<<"Partial Write"<<endl;
-		}*/
-		if((numRead = read(clientFd,buf,BUF_SIZE)) > 0)
+		if((numRead = read(clientFd,buf,size*3)) > 0)
 		{
 			ss << buf;
-		//	if(write(STDOUT_FILENO,buf,numRead) != numRead)
-		//		cout<<"Partial Write"<<endl;
 		}
 		
     	boost::archive::text_iarchive ia(ss);
-		Manager m2;
     	ia >> m2;
 		m2.display();	
 		strcpy(buf,"Hello Client\n");

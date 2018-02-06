@@ -4,7 +4,7 @@
 #include<boost/archive/text_oarchive.hpp>
 #include<boost/archive/text_iarchive.hpp>
 #include <boost/serialization/list.hpp>
-#include <list>
+//#include <list>
 using namespace std;
 
 class Emp
@@ -95,6 +95,4 @@ int main(int argc, char* argv[])
 	ia >> m2;
 	m2.display();
 	return 0;
-	
-
 }
