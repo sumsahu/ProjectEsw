@@ -1,0 +1,79 @@
+#include<iostream>
+#include<sstream>
+#include<string.h>
+#include<boost/archive/text_oarchive.hpp>
+#include<boost/archive/text_iarchive.hpp>
+
+using namespace std;
+
+class Emp
+{
+	private:
+		long empId;
+		string name;
+		string Address;
+		friend class boost::serialization::access;
+		template <typename Archive>
+		void serialize(Archive & ar,const unsigned int version)
+		{
+			ar & empId;
+			ar & name;
+			ar & Address;
+		}
+	public:
+		Emp(){}
+		Emp(long e,string n,string add)
+		{
+			this->empId = e;
+			this->name = n;
+			this->Address = add;
+		}
+		void display()
+		{
+			cout<<"Emp Id "<<this->empId<<endl;;
+			cout<<"Name "<<this->name<<endl;
+			cout<<"Address "<<this->Address;
+		}
+};
+
+class Manager
+{
+	private:
+		friend class boost::serialization::access;
+		Emp ceo;
+		Emp MD;
+		template <typename Archive>
+		void serialize(Archive & ar,const unsigned int version)
+		{
+			ar & ceo;
+			ar & MD;
+		}
+	public:
+		Manager(){}
+		Manager(const Emp& empCeo,const Emp& empMD):ceo(empCeo),MD(empMD)
+		{
+		}
+		void display()
+		{
+			ceo.display();
+			MD.display();
+		}	
+		virtual ~Manager(){}
+};
+int main(int argc, char* argv[])
+{
+	std::stringstream ss;
+	Emp e1(61455842,"Sumit Sahu","Pune");
+	Emp e2(184317,"Garima Sahu","Pune");
+	Manager m1( e1, e2);
+	boost::archive::text_oarchive oa(ss);
+	oa << m1;
+	cout<<"Archive data "<<ss<<" "<<endl;
+	boost::archive::text_iarchive ia(ss);
+	Manager m2;
+	ia >> m2;
+	m2.display();
+	return 0;
+	
+
+}
